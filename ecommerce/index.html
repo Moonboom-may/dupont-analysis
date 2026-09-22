@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电商经营诊断 · GMV 归因引擎</title>
+  <link rel="stylesheet" href="css/ecom.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <a href="../index.html" class="back-link">← 返回杜邦分析</a>
+      <div class="header-text">
+        <h1>电商经营诊断 · GMV 归因引擎</h1>
+        <p>GMV = 流量 × 转化率 × 客单价 · 下滑归因 · 利润诊断 · 风险评级</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="privacy-badge"><span class="dot dot-green"></span> 本地分析</span>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- 数据载入 -->
+    <div class="card">
+      <div class="card-head">
+        <h2>店铺数据载入</h2>
+        <span class="meta-line">支持载入典型样本或手动输入经营指标</span>
+      </div>
+      <div class="load-row">
+        <div class="sample-list">
+          <button class="sample-card" data-sample="growth">
+            <span class="sc-tag sc-ok">增长健康</span>
+            <span class="sc-name">相机旗舰店</span>
+            <span class="sc-desc">高毛利 + 付费增长</span>
+          </button>
+          <button class="sample-card" data-sample="traffic_drop">
+            <span class="sc-tag sc-risk">转化崩塌</span>
+            <span class="sc-name">数码配件店</span>
+            <span class="sc-desc">付费激增 + 亏损</span>
+          </button>
+          <button class="sample-card" data-sample="margin_squeeze">
+            <span class="sc-tag sc-normal">利润挤压</span>
+            <span class="sc-name">镜头组套店</span>
+            <span class="sc-desc">GMV 平 + 毛利下滑</span>
+          </button>
+        </div>
+        <button class="btn btn-ghost" id="btnToggleInput">✎ 手动输入指标</button>
+      </div>
+
+      <!-- 手动输入区 -->
+      <div class="manual-input" id="manualInput" hidden>
+        <div class="mi-row">
+          <label>店铺名称 <input type="text" id="inShop" value="我的店铺" /></label>
+          <label>期间 <input type="text" id="inPeriod" value="本月" /></label>
+        </div>
+        <p class="mi-tip">填写本月与上月数据，留空则该项不参与分析。金额单位：元；比率用小数（如 3% 填 0.03）。</p>
+        <table class="input-table">
+          <thead><tr><th>指标</th><th>本月</th><th>上月</th></tr></thead>
+          <tbody id="inputBody"></tbody>
+        </table>
+        <button class="btn btn-primary" id="btnRunManual">运行诊断</button>
+      </div>
+    </div>
+
+    <!-- 评级 banner -->
+    <div class="card rating-card" id="ratingCard" hidden>
+      <div class="rating-banner" id="ratingBanner">
+        <div class="rb-left">
+          <div class="rb-label">综合经营评级</div>
+          <div class="rb-grade" id="rbGrade">—</div>
+          <div class="rb-tag" id="rbTag">—</div>
+        </div>
+        <div class="rb-right" id="rbSummary"></div>
+      </div>
+    </div>
+
+    <!-- GMV 拆解树 -->
+    <div class="card" id="decomposeCard" hidden>
+      <div class="card-head">
+        <h2>GMV 三因素拆解</h2>
+        <span class="meta-line" id="shopMeta"></span>
+      </div>
+      <div class="gmv-canvas" id="gmvCanvas"></div>
+      <div class="attribution-box" id="attributionBox"></div>
+    </div>
+
+    <!-- 核心指标表 -->
+    <div class="card" id="ratioCard" hidden>
+      <div class="card-head"><h2>核心经营指标概览</h2><span class="meta-line">14 项核心比率</span></div>
+      <div class="ratio-table-wrap"><table class="ratio-table" id="ratioTable"></table></div>
+    </div>
+
+    <!-- 四维度诊断 -->
+    <div class="diag-grid" id="diagGrid"></div>
+
+    <!-- 风险清单 -->
+    <div class="card" id="riskCard" hidden>
+      <div class="card-head"><h2>经营风险提示与改善建议</h2></div>
+      <div class="risk-list" id="riskList"></div>
+    </div>
+
+    <!-- 方法论说明 -->
+    <div class="card method-card">
+      <div class="card-head"><h2>方法论说明</h2></div>
+      <div class="method-body">
+        <p><strong>① GMV 三因素拆解：</strong>GMV = 访客数（流量） × 转化率 × 客单价。任一指标变动都可直接归因到 GMV 变化，定位是"量"的问题还是"价"的问题。</p>
+        <p><strong>② 量价分解：</strong>ΔGMV = 量贡献（流量×转化 变动 × 上期客单价） + 价贡献（客单价变动 × 上期量）。量化增长/下滑来自销量还是单价。</p>
+        <p><strong>③ 流量结构分解：</strong>区分付费流量与免费流量占比及净增贡献，识别是否过度依赖付费、自然流量是否健康。</p>
+        <p><strong>④ 利润诊断：</strong>毛利率、净利率、广告投入产出比（GMV/广告费）、毛利/广告费（是否投放盈利）四项联动，识别"营收涨但利润跌"的虚假繁荣。</p>
+        <p><strong>⑤ 综合评级：</strong>依据规模、流量、转化、盈利、库存五维度核心指标客观评定为 优秀 / 正常 / 风险 三级。</p>
+        <p class="method-note">本引擎为杜邦分析经营诊断框架的电商迁移版本，所有数据本地处理，仅供经营参考。</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="app-footer">
+    <span>电商经营诊断引擎 · 杜邦框架电商迁移版</span>
+    <span>数据本地处理 · 仅供参考</span>
+  </footer>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script src="js/ecom-data.js"></script>
+  <script src="js/ecom-engine.js"></script>
+  <script src="js/ecom-app.js"></script>
+</body>
+</html>

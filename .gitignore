@@ -1,0 +1,18 @@
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Backup archives
+*.zip
+*.rar
+*.7z
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if any)
+node_modules/
