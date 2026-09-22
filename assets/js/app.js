@@ -391,7 +391,7 @@
   function renderDupont() {
     if (!STATE.dupont) return;
     var d = STATE.dupont;
-    $("roeMeta").textContent = (STATE.meta.company || "—") + " · " + (STATE.meta.period || "—") + " · ROE " + d.fmt.pct(d.metrics.roe);
+    $("roeMeta").textContent = (STATE.meta.company || "—") + " · " + (STATE.meta.period || "—") + " · ROE " + d.pct(d.metrics.roe);
 
     var canvas = $("dupontCanvas");
     canvas.innerHTML = buildSvg(d.tree, d);
@@ -423,7 +423,7 @@
     var l2xs = [180, 500, 820];
     var l2ids = ["netMargin", "assetTurn", "equityMult"];
     var l2labels = ["销售净利率", "总资产周转率", "权益乘数"];
-    var l2vals = [d.fmt.pct(d.metrics.netMargin), d.fmt.times(d.metrics.assetTurn), d.fmt.raw(d.metrics.equityMult)];
+    var l2vals = [d.pct(d.metrics.netMargin), d.times(d.metrics.assetTurn), d.raw(d.metrics.equityMult)];
     var l3y = 330;
     // 底层节点
     var leaves = [
@@ -690,7 +690,7 @@
     html += '<div class="ep-section"><h3>① 执行摘要</h3><p>' + escapeHtml(diag.rating.summary) + '</p>' +
       '<p>杜邦驱动归因：<strong>' + escapeHtml(d.driver.tag) + '</strong></p></div>';
     html += '<div class="ep-section"><h3>② 核心指标概览（14 项）</h3><ul>' +
-      '<li>ROE ' + d.fmt.pct(d.metrics.roe) + ' · 净利率 ' + d.fmt.pct(d.metrics.netMargin) + ' · 周转 ' + d.fmt.times(d.metrics.assetTurn) + ' · 权益乘数 ' + d.fmt.raw(d.metrics.equityMult) + '</li>' +
+      '<li>ROE ' + d.pct(d.metrics.roe) + ' · 净利率 ' + d.pct(d.metrics.netMargin) + ' · 周转 ' + d.times(d.metrics.assetTurn) + ' · 权益乘数 ' + d.raw(d.metrics.equityMult) + '</li>' +
       '<li>评级分布：优秀 ' + diag.rating.ok + ' / 正常 ' + diag.rating.normal + ' / 风险 ' + diag.rating.risk + '</li></ul></div>';
     html += '<div class="ep-section"><h3>③ 四维度诊断</h3><ul>' +
       diag.dimensions.map(function (dim) { return '<li>' + dim.icon + ' ' + dim.name + '：' + (dim.score.text || "数据不足") + '</li>'; }).join("") +
